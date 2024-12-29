@@ -1,17 +1,33 @@
 package com.example.prak9db.ui.home.viewmodel
 
 import android.provider.ContactsContract.Intents.Insert
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.prak9db.model.Mahasiswa
 import com.example.prak9db.repository.MahasiswaRepository
+import kotlinx.coroutines.launch
 
 
-class InsertViewModel (private mhs: MahasiswaRepository): ViewModel(){
+class InsertViewModel (private val mhs: MahasiswaRepository): ViewModel(){
     var uiState by mutableStateOf(InsertUiState())
         private set
 
+    fun updateInsertMhsState(insertUiEvent: InsertUiEvent){
+        uiState = InsertUiState(insertUiEvent = insertUiEvent)
+    }
 
+    suspend fun InsertMhs(){
+        viewModelScope.launch {
+            try {
+                mhs.insertMahasiswa(uiState.insertUiEvent.toMhs())
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
 }
 
 
