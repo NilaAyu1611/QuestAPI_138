@@ -1,5 +1,6 @@
 package com.example.prak9db.ui.home.viewmodel
 
+import android.provider.ContactsContract.Intents.Insert
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.prak9db.model.Mahasiswa
@@ -36,4 +37,8 @@ fun InsertUiEvent.toMhs(): Mahasiswa = Mahasiswa(
     jenisKelamin = jenisKelamin,
     kelas = kelas,
     angkatan = angkatan
+)
+
+fun Mahasiswa.toUiStateMhs():InsertUiState = InsertUiState(
+    insertUiEvent = toInsertUiEvent()
 )
