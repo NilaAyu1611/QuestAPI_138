@@ -13,7 +13,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 sealed class HomeUiState{
-    data class Succes(val mahasiswa: List<Mahasiswa>):HomeUiState()
+    data class Success(val mahasiswa: List<Mahasiswa>):HomeUiState()
     object Error: HomeUiState()
     object Loading:HomeUiState()
 }
@@ -31,7 +31,7 @@ class HomeViewModel (private val mhs: MahasiswaRepository): ViewModel(){
         viewModelScope.launch{
             mhsUIState = HomeUiState.Loading
             mhsUIState=try{
-                HomeUiState.Succes(mhs.getMahasiswa())
+                HomeUiState.Success(mhs.getMahasiswa())
             }catch (e: IOException){
                 HomeUiState.Error
             }catch(e: HttpException){

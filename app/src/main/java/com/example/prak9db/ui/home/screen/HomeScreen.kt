@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,13 +37,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.prak9db.R
 import com.example.prak9db.model.Mahasiswa
 import com.example.prak9db.navigation.DestinasiNavigasi
 import com.example.prak9db.ui.costumwidget.CostumeTopAppBar
 import com.example.prak9db.ui.home.viewmodel.HomeUiState
 import com.example.prak9db.ui.home.viewmodel.HomeViewModel
-import com.example.prak9db.ui.home.viewmodel.InsertViewModel
-import com.example.prak9db.ui.home.viewmodel.PenyediaViewModel
+import com.example.prak9db.ui.PenyediaViewModel
 
 object DestinasiHome: DestinasiNavigasi{
     override val route= "home"
@@ -77,7 +78,7 @@ fun HomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kontak")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Mahasiswa")
             }
         },
     ) {innerPadding ->
@@ -85,7 +86,7 @@ fun HomeScreen(
             homeUiState = viewModel.mhsUIState,
             retryAction = {viewModel.getMhs()},
             modifier = Modifier.padding(innerPadding),
-            onDetailClick = onDetailClick,onDetailClick = {
+            onDetailClick = onDetailClick, onDeleteClick = {
                 viewModel.deleteMhs(it.nim)
                 viewModel.getMhs()
             }
@@ -104,12 +105,12 @@ fun HomeStatus(
     when (homeUiState){
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
 
-        is HomeUiState.Succes ->
+        is HomeUiState.Success ->
             if(homeUiState.mahasiswa.isEmpty()){
                 return Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center){
-                    Text(text = "Tidak ada data Kontak")
+                    Text(text = "Tidak ada data Mahasiswa")
                 }
             }else  {
                 MhsLayout(
@@ -133,7 +134,7 @@ fun HomeStatus(
 fun OnLoading(modifier: Modifier = Modifier){
     Image(
         modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
+        painter = painterResource(R.drawable.loading),
         contentDescription = stringResource(R.string.loading)
     )
 }
@@ -148,9 +149,9 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+            painter = painterResource(id = R.drawable.connecerror), contentDescription = ""
         )
-        Text(text = stringResource(R.string.loading), modifier= Modifier.padding(16.dp))
+        Text(text = stringResource(R.string.loading_failed), modifier= Modifier.padding(16.dp))
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
         }
@@ -169,14 +170,14 @@ fun MhsLayout(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
-        items(mahasiswa){kontak ->
+        items(mahasiswa){mhs ->
             MhsCard(
-                mahasiswa= kontak,
+                mahasiswa= mhs,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onDetailClick(kontak)},
+                    .clickable { onDetailClick(mhs)},
                 onDeleteClick = {
-                    onDeleteClick(kontak)
+                    onDeleteClick(mhs)
                 }
             )
         }
