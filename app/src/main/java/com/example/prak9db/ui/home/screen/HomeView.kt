@@ -42,6 +42,7 @@ import com.example.prak9db.ui.costumwidget.CostumeTopAppBar
 import com.example.prak9db.ui.home.viewmodel.HomeUiState
 import com.example.prak9db.ui.home.viewmodel.HomeViewModel
 import com.example.prak9db.ui.home.viewmodel.InsertViewModel
+import com.example.prak9db.ui.home.viewmodel.PenyediaViewModel
 
 object DestinasiHome: DestinasiNavigasi{
     override val route= "home"
@@ -62,9 +63,9 @@ fun HomeScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiHome,titleRes,
+                title = DestinasiHome.titleRes,
                 canNavigateBack = false,
-                scrollBehavioer = scrollBehavior,
+                scrollBehavior = scrollBehavior,
                 onRefresh = {
                     viewModel.getMhs()
                 }

@@ -28,10 +28,11 @@ import com.example.prak9db.ui.costumwidget.CostumeTopAppBar
 import com.example.prak9db.ui.home.viewmodel.InsertUiEvent
 import com.example.prak9db.ui.home.viewmodel.InsertUiState
 import com.example.prak9db.ui.home.viewmodel.InsertViewModel
+import com.example.prak9db.ui.home.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 import java.text.Normalizer.Form
 
-object Destinasi:DestinasiNavigasi{
+object DestinasiEntry:DestinasiNavigasi{
     override val route = "item_entry"
     override val titleRes = "Entry Mhs"
 }
@@ -57,7 +58,7 @@ fun EntryMhsScreen(
         }
     ) { innerPadding ->
         EntryBody(
-            insertUiState - viewModel.uiState,
+            insertUiState = viewModel.uiState,
             onSiswaValueChange = viewModel::updateInsertMhsState,
             onSaveClick = {
                 coroutineScope.launch {
